@@ -9,7 +9,7 @@ Wii's world maps. While the original RouteInfo files are just plain CSV files, a
 technicalities come from hardcoded strings not many people are aware of. This tool helps with making
 this process more user-friendly while preventing errors from happening while editing instead of
 figuring out said errors during playtesting. It is available
-under https://b1gaming.github.io/route-editor
+under https://b1here.github.io/route-editor
 
 ## Route Documentation
 
