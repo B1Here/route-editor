@@ -22,7 +22,4 @@ homepage of this tool.
 
 ## Roadmap / TODO List
 
-- Improve user error handling
-- Improve visuals
 - Save route to local storage for later use instead of discarding data after every reload
-- Make functionality more user-friendly

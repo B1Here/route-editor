@@ -1,0 +1,37 @@
+  [
+    {
+      "version": "1.0.0",
+      "additions": [
+        "Initial release!"
+      ],
+      "changes": [],
+      "bugfixes": []
+    },
+    {
+      "version": "1.0.1",
+      "additions": [
+        "Page icon"
+      ],
+      "changes": [
+        "Styling and color improvements",
+        "Minimal HTML cleanup",
+        "File size optimisations"
+      ],
+      "bugfixes": []
+    },
+    {
+      "version": "1.1.0",
+      "additions": [
+        "Added the ability to configure the root cycles of the routes for world 5"
+      ],
+      "changes": [
+        "Moved from React to Svelte for better performance and a smaller bundle size",
+        "A complete rewrite of the codebase as well as a redesign of the UI",
+        "Improved validation",
+        "Updated some predefined data for points and routes"
+      ],
+      "bugfixes": [
+        "Fixed an issue where the last column would not be loaded at all when uploading a CSV file (it was never noticed because those columns were rarely used)"
+      ]
+    }
+  ]

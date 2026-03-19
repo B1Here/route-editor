@@ -1,9 +1,12 @@
-import react from '@vitejs/plugin-react-swc';
-import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import {defineConfig} from 'vite';
+import {svelte} from '@sveltejs/vite-plugin-svelte';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
   base: '/route-editor',
-  plugins: [react(), tsconfigPaths()]
+  plugins: [
+    svelte(),
+    tailwindcss(),
+  ],
 });

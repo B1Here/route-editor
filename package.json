@@ -1,36 +1,28 @@
 {
-  "name": "route-editor",
+  "name": "nsmbw-route-editor",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev-host": "vite --host",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "encoding-japanese": "^2.2.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "vite-tsconfig-paths": "^5.1.4"
+    "dev": "vite --host --open",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
   },
   "devDependencies": {
-    "@eslint/js": "^9.36.0",
-    "@stylistic/eslint-plugin": "^5.4.0",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@tsconfig/svelte": "^5.0.6",
     "@types/encoding-japanese": "^2.2.1",
-    "@types/react": "^19.1.13",
-    "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react-swc": "^4.1.0",
-    "eslint": "^9.36.0",
-    "eslint-plugin-perfectionist": "^4.15.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.22",
-    "globals": "^16.4.0",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.44.1",
-    "vite": "^7.1.7"
+    "@types/node": "^24.10.1",
+    "svelte": "^5.43.8",
+    "svelte-check": "^4.3.4",
+    "typescript": "~5.9.3",
+    "@tailwindcss/vite": "^4.2.1",
+    "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "encoding-japanese": "^2.2.0",
+    "lucide-svelte": "^0.575.0",
+    "tailwindcss": "^4.2.1"
   }
 }
