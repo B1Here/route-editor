@@ -165,6 +165,7 @@
           addEntity(entities, filler, currentIndex);
           currentIndex++;
         }}
+        disabled={entities.length >= 256}
       >
         <Plus class="inline align-bottom" /> Add Row
       </Button>

@@ -130,11 +130,15 @@
       <TableCell
         validators={[
           () => {
+            let message = 'A level name does not follow the correct format (e.g. W101).';
+            if(point.levelsAfterClear.includes(' ')) {
+              message = 'Tip: Level names should be separated by commas.';
+            }
             return {
               valid:
                 point.levelsAfterClear.length === 0 ||
                 point.levelsAfterClear.split(',').every((level) => verifyPointName(level, {levelPoint: true})),
-              message: 'A level name does not follow the correct format (e.g. W101).',
+              message,
             };
           },
         ]}
@@ -152,6 +156,10 @@
               point.bonesAfterClear.length === 0 || point.bonesAfterClear.split(',').every((rb) => verifyBoneName(rb)),
             message: 'A bone name may only contain alphanumeric characters and underscores.',
           }),
+          () => ({
+            valid: !point.bonesAfterClear.includes(' '),
+            message: 'Unlocked bone names should be separated by commas.',
+          })
         ]}
       >
         <input class="outline-none px-1" bind:value={point.bonesAfterClear} />
@@ -160,11 +168,15 @@
       <TableCell
         validators={[
           () => {
+            let message = 'A level name does not follow the correct format (e.g. W101).';
+            if(point.levelsAfterClear.includes(' ')) {
+              message = 'Tip: Level names should be separated by commas.';
+            }
             return {
               valid:
                 point.levelsAfterSecretExit.length === 0 ||
                 point.levelsAfterSecretExit.split(',').every((level) => verifyPointName(level, {levelPoint: true})),
-              message: 'A level name does not follow the correct format (e.g. W101).',
+              message,
             };
           },
         ]}
@@ -185,6 +197,10 @@
               point.bonesAfterSecretExit.split(',').every((rb) => verifyBoneName(rb)),
             message: 'A bone name may only contain alphanumeric characters and underscores.',
           }),
+          () => ({
+            valid: !point.bonesAfterSecretExit.includes(' '),
+            message: 'Unlocked bone names should be separated by commas.',
+          })
         ]}
       >
         <input class="outline-none px-1" bind:value={point.bonesAfterSecretExit} />
