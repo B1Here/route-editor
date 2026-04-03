@@ -1,4 +1,4 @@
-import type {ValidationResult} from "../model/common";
+import type {ValidationResult} from "@model/common";
 
 /**
  * Converts the given string to a valid CSS class name by replacing all non-alphanumeric characters with hyphens and converting to lowercase.

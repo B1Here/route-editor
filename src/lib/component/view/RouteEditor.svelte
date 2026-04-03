@@ -1,14 +1,14 @@
 <script lang="ts">
-  import {entityData, routeFiller} from '../../page-state.svelte';
-  import type {Route} from '../../model/common';
-  import {rootCycles, routeAnimations} from '../../model/route-info-data';
-  import TableRow from '../TableRow.svelte';
-  import TableCell from '../TableCell.svelte';
-  import TableEditor from '../TableEditor.svelte';
-  import {checkForDuplicates} from '../../utils/editor-utils.svelte';
-  import {verifyPointName} from '../../utils/entity-utils.svelte';
-  import {csvSplit} from '../../utils/csv-utils';
-  import {getColorPropertiesForTheme} from '../../utils/utils.svelte';
+  import {entityData, routeFiller} from '@lib/page-state.svelte';
+  import type {Route} from '@model/common';
+  import {rootCycles, routeAnimations} from '@model/route-info-data';
+  import TableRow from '@component/TableRow.svelte';
+  import TableCell from '@component/TableCell.svelte';
+  import TableEditor from '@component/TableEditor.svelte';
+  import {checkForDuplicates} from '@utils/editor-utils.svelte';
+  import {verifyPointName} from '@utils/entity-utils.svelte';
+  import {csvSplit} from '@utils/csv-utils';
+  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
 
   let routes = $derived(entityData.routes);
   let worldNumber = $derived(
@@ -17,16 +17,14 @@
   let currentIndex = $state(0);
 
   const colors = $derived(
-    getColorPropertiesForTheme(
-      {
-        light: {
-          option: '',
-        },
-        dark: {
-          option: 'bg-black text-white',
-        },
+    getColorPropertiesForTheme({
+      light: {
+        option: '',
       },
-    ),
+      dark: {
+        option: 'bg-black text-white',
+      },
+    }),
   );
 </script>
 
@@ -39,7 +37,7 @@
     animation: data[1] as Route['animation'],
     activeRootCycles: csvSplit<Route['activeRootCycles'][number]>(data[2], index + 1),
   })}
-  fileData={{name: `routeW${worldNumber}.csv`, omittedColumns: [{activeRootCycles: () => worldNumber !== 5}]}}
+  fileData={{name: `routeW${worldNumber}.csv`, omittedColumns: {activeRootCycles: () => worldNumber !== 5}}}
   beforeDownloadValidators={[
     (entities: Route[]) => {
       const levelRoutes = entities.filter((r) => r.name.includes('W'));

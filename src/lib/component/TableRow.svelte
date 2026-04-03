@@ -1,8 +1,7 @@
 <script lang="ts">
-  import TableCell from './TableCell.svelte';
+  import TableCell from '@component/TableCell.svelte';
   import type {HTMLAttributes} from 'svelte/elements';
-  import {configuration} from '../page-state.svelte';
-  import {getColorPropertiesForTheme} from '../utils/utils.svelte';
+  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
 
   interface TableRowProps extends Omit<HTMLAttributes<HTMLTableRowElement>, 'onclick' | 'onfocuscapture'> {
     index: number;
@@ -13,20 +12,18 @@
   const {children, class: className, index, onselect, selected, ...props}: TableRowProps = $props();
 
   const colors = $derived(
-    getColorPropertiesForTheme(
-      {
-        light: {
-          selected: 'bg-gray-200',
-          even: 'even:bg-gray-100',
-          id: 'text-neutral-700',
-        },
-        dark: {
-          selected: 'bg-zinc-700',
-          even: 'even:bg-zinc-900',
-          id: 'text-zinc-300',
-        },
+    getColorPropertiesForTheme({
+      light: {
+        selected: 'bg-gray-200',
+        even: 'even:bg-gray-100',
+        id: 'text-neutral-700',
       },
-    ),
+      dark: {
+        selected: 'bg-zinc-700',
+        even: 'even:bg-zinc-900',
+        id: 'text-zinc-300',
+      },
+    }),
   );
 </script>
 

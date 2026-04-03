@@ -1,6 +1,6 @@
 import type {ClassValue} from "svelte/elements";
-import type {Theme} from "../model/common";
-import {configuration} from "../page-state.svelte";
+import type {Theme} from "@model/common";
+import {configuration} from "@lib/page-state.svelte";
 
 const theme = $derived(configuration.settings.theme);
 
@@ -13,6 +13,11 @@ interface ThemedColorObject<T extends string> {
   };
 }
 
+/**
+ * Returns whether the given object is defined, meaning it is neither null nor undefined.
+ * @param obj the object to check for being defined.
+ * @returns whether the object is defined.
+ */
 export function isDefined<T>(obj: T | null | undefined): obj is T {
   return obj !== null && obj !== undefined;
 }

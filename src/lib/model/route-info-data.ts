@@ -1,5 +1,5 @@
 /**
- * An object defining the internal japanese names of all route animations as well as a rough translation.
+ * An object defining the internal japanese names of all possible route animations as well as a rough translation of them.
  */
 export const routeAnimations = [
   {translatedName: "Jump", jpName: "ジャンプ"},
@@ -24,7 +24,7 @@ export const routeAnimations = [
 ] as const;
 
 /**
- * A list of all available flags New Super Mario Bros. Wii has.
+ * A list of all available point flags New Super Mario Bros. Wii has.
  */
 export const allFlags = {
   stop: 'Stops player',
@@ -59,6 +59,12 @@ export const allFlags = {
   anchor: 'Anchor? (unused)',
 } as const;
 
-export const uniqueFlags = Object.keys(allFlags).filter(f => !Number.isNaN(parseInt(f.charAt(f.length - 1))));
+/**
+ * A list of all point flags that end with a number and can only be used once per (sub)world.
+ */
+export const numberedFlags = Object.keys(allFlags).filter(f => !Number.isNaN(parseInt(f.charAt(f.length - 1))));
 
+/**
+ * A list of available root cycles used for some routes in World 5 exclusively.
+ */
 export const rootCycles = ['A', 'B', 'C'] as const;

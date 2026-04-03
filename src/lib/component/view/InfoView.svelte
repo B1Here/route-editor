@@ -1,8 +1,8 @@
 <script lang="ts">
   import {BookOpenText} from 'lucide-svelte';
-  import changelog from '../../../changelog.json';
-  import {getColorPropertiesForTheme} from '../../utils/utils.svelte';
-  import CodeBlock from '../CodeBlock.svelte';
+  import changelog from '@lib/changelog.json';
+  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
+  import CodeBlock from '@component/CodeBlock.svelte';
 
   const colors = $derived(
     getColorPropertiesForTheme({

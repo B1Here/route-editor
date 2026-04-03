@@ -1,6 +1,6 @@
 <script lang="ts">
   import type {HTMLButtonAttributes} from 'svelte/elements';
-  import {tailwindColors} from '../model/common';
+  import {tailwindColors} from '@model/common';
 
   interface ButtonProps extends HTMLButtonAttributes {
     color?: keyof typeof tailwindColors;

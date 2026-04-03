@@ -15,6 +15,13 @@
      */
     "allowJs": true,
     "checkJs": true,
+    "paths": {
+      "@lib/*": ["./src/lib/*"],
+      "@component/*": ["./src/lib/component/*"],
+      "@view/*": ["./src/lib/component/view/*"],
+      "@utils/*": ["./src/lib/utils/*"],
+      "@model/*": ["./src/lib/model/*"]
+    },
     "moduleDetection": "force"
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/changelog.json"],

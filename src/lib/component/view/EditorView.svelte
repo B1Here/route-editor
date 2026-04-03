@@ -1,10 +1,10 @@
 <script lang="ts">
   import {MapPin, Waypoints} from 'lucide-svelte';
-  import {configuration} from '../../page-state.svelte';
-  import PointEditor from './PointEditor.svelte';
-  import RouteEditor from './RouteEditor.svelte';
-  import {getColorPropertiesForTheme} from '../../utils/utils.svelte';
-  import Tab from '../Tab.svelte';
+  import {configuration} from '@lib/page-state.svelte';
+  import PointEditor from '@view/PointEditor.svelte';
+  import RouteEditor from '@view/RouteEditor.svelte';
+  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
+  import Tab from '@component/Tab.svelte';
 
   let editorView = $derived(configuration.currentEditorView);
   let settings = $derived(configuration.settings);
@@ -14,25 +14,18 @@
   });
 
   $effect(() => {
-    localStorage.setItem(
-      'settings',
-      JSON.stringify({...settings,
-        previewCsv: settings.previewCsv,
-      }),
-    );
+    localStorage.setItem('settings', JSON.stringify({...settings, previewCsv: settings.previewCsv}));
   });
 
   const colors = $derived(
-    getColorPropertiesForTheme(
-      {
-        light: {
-          darkBg: 'bg-zinc-100',
-        },
-        dark: {
-          darkBg: 'bg-zinc-900',
-        },
+    getColorPropertiesForTheme({
+      light: {
+        darkBg: 'bg-zinc-100',
       },
-    ),
+      dark: {
+        darkBg: 'bg-zinc-900',
+      },
+    }),
   );
 </script>
 
@@ -46,15 +39,6 @@
       <Waypoints class="inline h-5 w-5" /> Routes
     </Tab>
     <Tab empty size="max" />
-    <!-- Might be added back later -->
-    <!-- <Tab
-      action={() => (settings.previewCsv = !settings.previewCsv)}
-      active={settings.previewCsv}
-      toggleable
-    >
-      <FileText class="inline h-5 w-5" /> Preview CSV text
-    </Tab> -->
-    <Tab empty />
   </div>
   {#if editorView === 'routes'}
     <RouteEditor />

@@ -1,13 +1,13 @@
 <script lang="ts" generics="T extends object">
   import type {Snippet} from 'svelte';
-  import type {CombinedErrorsValidationResult, OmitWithPredicate, ValidationResult} from '../model/common';
-  import {configuration} from '../page-state.svelte';
-  import Button from './Button.svelte';
-  import {addEntity, moveEntity, removeEntity} from '../utils/entity-utils.svelte';
-  import {csvSplit, arrayToCsv, toSjisBase64String, toUnicode} from '../utils/csv-utils';
-  import {createTableHeader} from '../utils/editor-utils.svelte';
+  import type {CombinedErrorsValidationResult, ValidationResult} from '@model/common';
+  import {configuration} from '@lib/page-state.svelte';
+  import Button from '@component/Button.svelte';
+  import {addEntity, moveEntity, removeEntity} from '@utils/entity-utils.svelte';
+  import {csvSplit, arrayToCsv, toSjisBase64String, toUnicode} from '@utils/csv-utils';
+  import {createTableHeader} from '@utils/editor-utils.svelte';
   import {ArrowDownFromLine, ArrowUpFromLine, FileDown, FileText, Minus, Plus} from 'lucide-svelte';
-  import {getColorPropertiesForTheme, isDefined} from '../utils/utils.svelte';
+  import {getColorPropertiesForTheme, isDefined} from '@utils/utils.svelte';
 
   interface TableEditorProps<T extends object> {
     beforeDownloadValidators?: Array<(entities: T[]) => ValidationResult>;
@@ -16,8 +16,8 @@
     entities: T[];
     entityMapper: (data: string[], index: number) => T;
     fileData: {
-      name: HTMLAnchorElement['download']
-      omittedColumns?: Array<OmitWithPredicate<T>>;
+      name: HTMLAnchorElement['download'];
+      omittedColumns?: Record<keyof T, boolean>;
     };
     filler: T;
     headers: string[];
@@ -55,7 +55,14 @@
 
   function handleFile(file: File | null): void {
     if (file) {
+      const extension = file.name.split('.').pop();
+      if (extension?.toLowerCase() !== 'csv') {
+        fileErrorMessage = 'Invalid file type. Please upload a CSV file.';
+        return;
+      }
+
       fileErrorMessage = undefined;
+
       const reader = new FileReader();
       reader.onload = async (e) => {
         if (e.target?.result != null && typeof e.target.result === 'object') {
@@ -74,10 +81,7 @@
           }
         }
       };
-      const extension = file.name.split('.').pop();
-      if (extension?.toLowerCase() !== 'csv') {
-        return;
-      }
+
       reader.readAsArrayBuffer(file);
     }
   }
@@ -99,20 +103,18 @@
   }
 
   const colors = $derived(
-    getColorPropertiesForTheme(
-      {
-        light: {
-          file: 'bg-gray-100 hover:bg-gray-200 file:bg-gray-200 hover:file:bg-gray-300',
-          outside: 'bg-zinc-100',
-          header: 'bg-gray-300',
-        },
-        dark: {
-          file: 'bg-zinc-800 hover:bg-zinc-700 file:bg-zinc-700 hover:file:bg-zinc-600',
-          outside: 'bg-zinc-900',
-          header: 'bg-zinc-600',
-        },
+    getColorPropertiesForTheme({
+      light: {
+        file: 'bg-gray-100 hover:bg-gray-200 file:bg-gray-200 hover:file:bg-gray-300',
+        outside: 'bg-zinc-100',
+        header: 'bg-gray-300',
       },
-    ),
+      dark: {
+        file: 'bg-zinc-800 hover:bg-zinc-700 file:bg-zinc-700 hover:file:bg-zinc-600',
+        outside: 'bg-zinc-900',
+        header: 'bg-zinc-600',
+      },
+    }),
   );
 </script>
 
@@ -144,7 +146,7 @@
     </div>
   {/if}
   <div class="flex-1 overflow-auto w-full">
-    <table class={["border border-neutral-500 border-collapse m-4", configuration.settings.centerTables && 'mx-auto']}>
+    <table class={['border border-neutral-500 border-collapse m-4', configuration.settings.centerTables && 'mx-auto']}>
       <thead>
         <tr>
           {#each [''].concat(headers) as header}

@@ -1,16 +1,16 @@
 import Encoding from "encoding-japanese";
-import {isDefined} from "./utils.svelte";
-import type {OmitWithPredicate} from "../model/common";
+import {isDefined} from "@utils/utils.svelte";
 
 /**
  * Returns a CSV string representation of the given array of objects.
  * @param objects the array of objects to convert.
+ * @param omittedColumns an optional record of column keys to omit from the CSV output if the value of a key is true.
  * @returns the CSV string representation.
  */
-export function arrayToCsv<T extends object>(objects: Array<T>, omittedColumns?: Array<OmitWithPredicate<T>>): string {
+export function arrayToCsv<T extends object>(objects: Array<T>, omittedColumns?: Record<keyof T, boolean>): string {
   return objects.map((obj) => Object.keys(obj).map((key) => {
     const value = obj[key as keyof T];
-    if (!isDefined(value) || (omittedColumns?.some((col) => col[key as keyof T]?.(value)))) {
+    if (!isDefined(value) || (omittedColumns?.[key as keyof T])) {
       return '';
     }
 

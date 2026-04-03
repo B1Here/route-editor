@@ -1,10 +1,19 @@
-import type {PointVerificationOptions} from "../model/common";
-import {isDefined} from "./utils.svelte";
+import {isDefined} from "@utils/utils.svelte";
+
+interface PointVerificationOptions {
+  levelPoint: true;
+  flagPoint: true;
+  passPoint: true;
+}
 
 export function entityHasId<T extends object>(entity: T): entity is T & {id: number;} {
   return typeof (entity as any).id === 'number';
 }
 
+/**
+ * Updates the indicies of the given entities if they all have an `id` property. The `id` property of each entity will be set to its current index in the array.
+ * @param entities the array of entities to update.
+ */
 function updateIndecies<T extends object>(entities: T[]): void {
   if (entities.every(entityHasId)) {
     entities.forEach((item, idx) => {
@@ -38,6 +47,7 @@ export function moveEntity<T extends object>(entities: T[], index: number, direc
     entities[index + 1] = entities[index];
     entities[index] = temp;
   }
+
   updateIndecies(entities);
 }
 
@@ -70,6 +80,10 @@ export function verifyPointName(pointName: string, matchAgainst?: Partial<PointV
   return false;
 }
 
+/**
+ * @param boneName the bone name to verify.
+ * @returns whether the given bone is valid.
+ */
 export function verifyBoneName(boneName: string): boolean {
   return boneName.match(/^[a-zA-Z0-9_]+$/) !== null;
 }

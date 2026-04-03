@@ -1,14 +1,14 @@
 <script lang="ts">
-  import {entityData, pointFiller} from '../../page-state.svelte';
-  import type {FlagKeys, Point} from '../../model/common';
-  import {allFlags, uniqueFlags} from '../../model/route-info-data';
-  import TableEditor from '../TableEditor.svelte';
-  import TableCell from '../TableCell.svelte';
-  import TableRow from '../TableRow.svelte';
-  import {csvSplit} from '../../utils/csv-utils';
-  import {checkForDuplicates} from '../../utils/editor-utils.svelte';
-  import {verifyBoneName, verifyPointName} from '../../utils/entity-utils.svelte';
-  import {getColorPropertiesForTheme} from '../../utils/utils.svelte';
+  import {entityData, pointFiller} from '@lib/page-state.svelte';
+  import type {FlagKeys, Point} from '@model/common';
+  import {allFlags, numberedFlags} from '@model/route-info-data';
+  import TableEditor from '@component/TableEditor.svelte';
+  import TableCell from '@component/TableCell.svelte';
+  import TableRow from '@component/TableRow.svelte';
+  import {csvSplit} from '@utils/csv-utils';
+  import {checkForDuplicates} from '@utils/editor-utils.svelte';
+  import {verifyBoneName, verifyPointName} from '@utils/entity-utils.svelte';
+  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
 
   let points = $derived(entityData.points);
   let worldNumber = $derived(parseInt(points.find((p) => p.name.startsWith('W'))?.name[1] || '0'));
@@ -16,18 +16,16 @@
   let currentIndex = $state(0);
 
   const colors = $derived(
-    getColorPropertiesForTheme(
-      {
-        light: {
-          option: '',
-          unused: 'text-black/50',
-        },
-        dark: {
-          option: 'bg-black text-white',
-          unused: 'text-white/50',
-        },
+    getColorPropertiesForTheme({
+      light: {
+        option: '',
+        unused: 'text-black/50',
       },
-    ),
+      dark: {
+        option: 'bg-black text-white',
+        unused: 'text-white/50',
+      },
+    }),
   );
 </script>
 
@@ -99,12 +97,12 @@
         validators={[
           () => {
             const pointsWithUniqueFlags = points.filter(
-              (p) => p.id !== point.id && p.flags.some((f) => uniqueFlags.includes(f)),
+              (p) => p.id !== point.id && p.flags.some((f) => numberedFlags.includes(f)),
             );
 
             return {
               valid: !pointsWithUniqueFlags.some((p) =>
-                p.flags.some((f) => point.flags.includes(f) && uniqueFlags.includes(f)),
+                p.flags.some((f) => point.flags.includes(f) && numberedFlags.includes(f)),
               ),
               message: `Points cannot share unique flags: "${pointsWithUniqueFlags.map((p) => p.name).join(', ')}".`,
             };
@@ -131,7 +129,7 @@
         validators={[
           () => {
             let message = 'A level name does not follow the correct format (e.g. W101).';
-            if(point.levelsAfterClear.includes(' ')) {
+            if (point.levelsAfterClear.includes(' ')) {
               message = 'Tip: Level names should be separated by commas.';
             }
             return {
@@ -152,24 +150,23 @@
             message: 'An unlocked bone name cannot exceed 9 characters in length.',
           }),
           () => ({
-            valid:
-              point.bonesAfterClear.length === 0 || point.bonesAfterClear.split(',').every((rb) => verifyBoneName(rb)),
+            valid: point.bonesAfterClear.length === 0 || point.bonesAfterClear.split(',').every(verifyBoneName),
             message: 'A bone name may only contain alphanumeric characters and underscores.',
           }),
           () => ({
             valid: !point.bonesAfterClear.includes(' '),
             message: 'Unlocked bone names should be separated by commas.',
-          })
+          }),
         ]}
       >
         <input class="outline-none px-1" bind:value={point.bonesAfterClear} />
       </TableCell>
-      <TableCell class={["px-2 text-center", colors.unused]}>Unused (does nothing)</TableCell>
+      <TableCell class={['px-2 text-center', colors.unused]}>Unused (does nothing)</TableCell>
       <TableCell
         validators={[
           () => {
             let message = 'A level name does not follow the correct format (e.g. W101).';
-            if(point.levelsAfterClear.includes(' ')) {
+            if (point.levelsAfterClear.includes(' ')) {
               message = 'Tip: Level names should be separated by commas.';
             }
             return {
@@ -193,19 +190,18 @@
           }),
           () => ({
             valid:
-              point.bonesAfterSecretExit.length === 0 ||
-              point.bonesAfterSecretExit.split(',').every((rb) => verifyBoneName(rb)),
+              point.bonesAfterSecretExit.length === 0 || point.bonesAfterSecretExit.split(',').every(verifyBoneName),
             message: 'A bone name may only contain alphanumeric characters and underscores.',
           }),
           () => ({
             valid: !point.bonesAfterSecretExit.includes(' '),
             message: 'Unlocked bone names should be separated by commas.',
-          })
+          }),
         ]}
       >
         <input class="outline-none px-1" bind:value={point.bonesAfterSecretExit} />
       </TableCell>
-      <TableCell class={["px-2 text-center", colors.unused]}>Unused (does nothing)</TableCell>
+      <TableCell class={['px-2 text-center', colors.unused]}>Unused (does nothing)</TableCell>
     </TableRow>
   {/each}
 </TableEditor>

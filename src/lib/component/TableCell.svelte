@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {type Supplier, type ValidationResult} from '../model/common';
+  import type {Supplier, ValidationResult} from '@model/common';
   import type {HTMLAttributes} from 'svelte/elements';
   import {TriangleAlert} from 'lucide-svelte';
 
@@ -11,10 +11,6 @@
   const invalidResults = $derived(validators?.filter((v) => !v().valid).map((v) => v()) || []);
 </script>
 
-<!--
-@component
-A simple table cell element that can have validators for its children's contents attached to it.
--->
 <td class={['p-0 border border-neutral-500 m-0 align-middle relative', className]} {...props}>
   {@render children?.()}
   {#if invalidResults.length > 0}

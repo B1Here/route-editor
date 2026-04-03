@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   import {CircleAlert} from 'lucide-svelte';
-  import {themes, configuration} from '../../page-state.svelte';
-  import {createTableHeader} from '../../utils/editor-utils.svelte';
-  import Button from '../Button.svelte';
-  import {getColorPropertiesForTheme} from '../../utils/utils.svelte';
+  import {themes, configuration} from '@lib/page-state.svelte';
+  import {createTableHeader} from '@utils/editor-utils.svelte';
+  import Button from '@component/Button.svelte';
+  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
 
   let settings = $derived(configuration.settings);
 
@@ -45,7 +45,12 @@
     <h4 class="text-xl font-medium my-2">Appearance</h4>
     <div>
       <label for="theme">Theme</label>
-      <select class="border rounded-lg border-neutral-500 px-1 py-0.5" id="theme" name="theme" bind:value={settings.theme}>
+      <select
+        class="border rounded-lg border-neutral-500 px-1 py-0.5"
+        id="theme"
+        name="theme"
+        bind:value={settings.theme}
+      >
         {#each themes as theme}
           <option class={colors.option} value={theme}>{createTableHeader(theme)}</option>
         {/each}
