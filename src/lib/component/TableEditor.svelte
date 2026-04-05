@@ -17,7 +17,7 @@
     entityMapper: (data: string[], index: number) => T;
     fileData: {
       name: HTMLAnchorElement['download'];
-      omittedColumns?: Record<keyof T, boolean>;
+      omittedColumns?: Partial<Record<keyof T, boolean>>;
     };
     filler: T;
     headers: string[];

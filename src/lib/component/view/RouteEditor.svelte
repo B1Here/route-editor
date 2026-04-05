@@ -37,7 +37,7 @@
     animation: data[1] as Route['animation'],
     activeRootCycles: csvSplit<Route['activeRootCycles'][number]>(data[2], index + 1),
   })}
-  fileData={{name: `routeW${worldNumber}.csv`, omittedColumns: {activeRootCycles: () => worldNumber !== 5}}}
+  fileData={{name: `routeW${worldNumber}.csv`, omittedColumns: {activeRootCycles: worldNumber !== 5}}}
   beforeDownloadValidators={[
     (entities: Route[]) => {
       const levelRoutes = entities.filter((r) => r.name.includes('W'));
