@@ -24,7 +24,7 @@ export const routeAnimations = [
 ] as const;
 
 /**
- * A list of all available point flags New Super Mario Bros. Wii has.
+ * A list of all available point flags New Super Mario Bros. Wii has. The keys are the internal names of the flags, while the values are rough definitions of their function.
  */
 export const allFlags = {
   stop: 'Stops player',
@@ -43,6 +43,7 @@ export const allFlags = {
   demo6: 'Koopaling jump point 6',
   demo7: 'Koopaling jump point 7',
   sand: 'Quicksand landing particles',
+  ice: 'Ice landing particles (unused)',
   noshift: 'Unknown (prevents camera shift?)',
   link1: 'Subworld link',
   switch: 'Red Switch',
@@ -55,7 +56,6 @@ export const allFlags = {
   link3: 'Subworld link (3) (unused)',
   link4: 'Subworld link (4) (unused)',
   link5: 'Subworld link (5) (unused)',
-  ice: 'Ice landing particles (unused)',
   anchor: 'Anchor? (unused)',
 } as const;
 

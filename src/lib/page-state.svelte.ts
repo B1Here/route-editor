@@ -1,6 +1,6 @@
 import type {EditorTabView, Point, Route, Theme, View} from "@model/common";
 
-export const themes = ['light', 'dark', 'system'] as const;
+export const themes = ['system', 'light', 'dark'] as const;
 export const views = ['info', 'editor', 'settings'] as const;
 export const editorTabViews = ['routes', 'points'] as const;
 

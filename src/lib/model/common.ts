@@ -16,13 +16,13 @@ export interface Point {
   levelsAfterClear: string;
   bonesAfterClear: string;
   /**
-   * Unused as all code was merged into the "bonesAfterClear" field.
+   * Unused. Animations are referenced by the "bonesAfterClear" field.
    */
   animationsAfterClear: null;
   levelsAfterSecretExit: string;
   bonesAfterSecretExit: string;
   /**
-   * Unused as all code was merged into the "bonesAfterSecretExit" field.
+   * Unused. Animations are referenced by the "bonesAfterSecretExit" field.
    */
   animationsAfterSecretExit: null;
 }
