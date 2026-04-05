@@ -1,4 +1,4 @@
-import type {editorTabViews, themes, views} from "../page-state.svelte";
+import type {editorTabViews, themes, textDisplays, views} from "../page-state.svelte";
 import {allFlags, rootCycles, routeAnimations} from "./route-info-data";
 
 export type FlagKeys = keyof typeof allFlags;
@@ -69,6 +69,8 @@ export const tailwindColors = {
   mist: 'bg-mist-600 hover:bg-mist-500 active:bg-mist-400 disabled:bg-mist-600 text-white',
   olive: 'bg-olive-600 hover:bg-olive-500 active:bg-olive-400 disabled:bg-olive-600 text-white',
 } as const;
+
+export type TextDisplay = keyof typeof textDisplays;
 
 export type Consumer<T> = (arg: T) => void;
 

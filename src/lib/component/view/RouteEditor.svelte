@@ -8,7 +8,7 @@
   import {checkForDuplicates} from '@utils/editor-utils.svelte';
   import {verifyPointName} from '@utils/entity-utils.svelte';
   import {csvSplit} from '@utils/csv-utils';
-  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
+  import {getColorPropertiesForTheme, getDisplayText} from '@utils/utils.svelte';
 
   let routes = $derived(entityData.routes);
   let worldNumber = $derived(
@@ -80,13 +80,13 @@
       </TableCell>
       <TableCell>
         <select
-          class="form-select border-0 sharp-corners bg-transparent"
+          class="form-select border-0 sharp-corners bg-transparent w-full"
           id="route-animation"
           bind:value={route.animation}
         >
           {#each routeAnimations as animation}
             <option class={colors.option} value={animation.jpName}>
-              {animation.translatedName}
+              {getDisplayText(animation.jpName, animation.translatedName)}
             </option>
           {/each}
         </select>
@@ -101,7 +101,7 @@
       >
         {#if worldNumber === 5}
           <select
-            class="form-select border-0 sharp-corners bg-transparent"
+            class="form-select border-0 sharp-corners bg-transparent w-full"
             multiple
             size="1"
             bind:value={route.activeRootCycles}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import {CircleAlert} from 'lucide-svelte';
-  import {themes, configuration} from '@lib/page-state.svelte';
+  import {themes, textDisplays, configuration} from '@lib/page-state.svelte';
   import {createTableHeader} from '@utils/editor-utils.svelte';
   import Button from '@component/Button.svelte';
   import {getColorPropertiesForTheme} from '@utils/utils.svelte';
@@ -14,6 +14,7 @@
         theme: settings.theme,
         previewCsv: settings.previewCsv,
         centerTables: settings.centerTables,
+        textDisplay: settings.textDisplay,
       }),
     );
   });
@@ -43,7 +44,7 @@
       <label for="center-tables">Center Tables</label>
     </div>
     <h4 class="text-xl font-medium my-2">Appearance</h4>
-    <div>
+    <div class="w-max grid grid-cols-[max-content_1fr] gap-2">
       <label for="theme">Theme</label>
       <select
         class="border rounded-lg border-neutral-500 px-1 py-0.5"
@@ -53,6 +54,17 @@
       >
         {#each themes as theme}
           <option class={colors.option} value={theme}>{createTableHeader(theme)}</option>
+        {/each}
+      </select>
+      <label for="text-display">Text Display</label>
+      <select
+        class="border rounded-lg border-neutral-500 px-1 py-0.5"
+        name="text-display"
+        id="text-display"
+        bind:value={settings.textDisplay}
+      >
+        {#each Object.entries(textDisplays) as [key, value]}
+          <option class={colors.option} value={key}>{value}</option>
         {/each}
       </select>
     </div>

@@ -8,7 +8,7 @@
   import {csvSplit} from '@utils/csv-utils';
   import {checkForDuplicates} from '@utils/editor-utils.svelte';
   import {verifyBoneName, verifyPointName} from '@utils/entity-utils.svelte';
-  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
+  import {getColorPropertiesForTheme, getDisplayText} from '@utils/utils.svelte';
 
   let points = $derived(entityData.points);
   let worldNumber = $derived(parseInt(points.find((p) => p.name.startsWith('W'))?.name[1] || '0'));
@@ -120,7 +120,7 @@
         <select multiple size="1" id="route-animation" bind:value={point.flags}>
           {#each Object.keys(allFlags) as flag}
             <option class={colors.option} value={flag}>
-              {allFlags[flag as FlagKeys]}
+              {getDisplayText(flag, allFlags[flag as FlagKeys])}
             </option>
           {/each}
         </select>
