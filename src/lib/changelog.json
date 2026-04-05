@@ -36,11 +36,20 @@
     },
     {
       "version": "1.1.1",
-      "additions": [],
-      "changes": [
-        "Added some small hints to help with inputs that can have a list of values separated by commas",
-        "Limited the amount of points/routes to 256"
+      "additions": [
+        "Added some small hints to help with inputs that can have a list of values separated by commas"
       ],
+      "changes": [
+        "Limited the amount of points / routes to 256"
+      ],
+      "bugfixes": []
+    },
+    {
+      "version": "1.1.2",
+      "additions": [
+        "Added the ability to configure the way hardcoded strings are displayed in the UI (e.g. whether to show the internal names or the more user-friendly / descriptive ones)"
+      ],
+      "changes": [],
       "bugfixes": []
     }
   ]
