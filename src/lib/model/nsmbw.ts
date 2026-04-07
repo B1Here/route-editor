@@ -68,3 +68,29 @@ export const numberedFlags = Object.keys(allFlags).filter(f => !Number.isNaN(par
  * A list of available root cycles used for some routes in World 5 exclusively.
  */
 export const rootCycles = ['A', 'B', 'C'] as const;
+
+export type FlagKeys = keyof typeof allFlags;
+
+export interface Route {
+  name: string;
+  animation: typeof routeAnimations[number]['jpName'];
+  activeRootCycles: Array<typeof rootCycles[number]>;
+}
+
+export interface Point {
+  id: number;
+  name: string;
+  flags: Array<FlagKeys>;
+  levelsAfterClear: string;
+  bonesAfterClear: string;
+  /**
+   * Unused. Animations are referenced by the "bonesAfterClear" field.
+   */
+  animationsAfterClear: null;
+  levelsAfterSecretExit: string;
+  bonesAfterSecretExit: string;
+  /**
+   * Unused. Animations are referenced by the "bonesAfterSecretExit" field.
+   */
+  animationsAfterSecretExit: null;
+}

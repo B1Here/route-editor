@@ -1,6 +1,5 @@
 <script lang="ts" generics="T extends object">
   import type {Snippet} from 'svelte';
-  import type {CombinedErrorsValidationResult, ValidationResult} from '@model/common';
   import {configuration} from '@lib/page-state.svelte';
   import Button from '@component/Button.svelte';
   import {addEntity, moveEntity, removeEntity} from '@utils/entity-utils.svelte';
@@ -10,58 +9,48 @@
   import {getColorPropertiesForTheme, isDefined} from '@utils/utils.svelte';
 
   interface TableEditorProps<T extends object> {
-    beforeDownloadValidators?: Array<(entities: T[]) => ValidationResult>;
     children: Snippet;
     currentIndex: number;
     entities: T[];
-    entityMapper: (data: string[], index: number) => T;
     fileData: {
       name: HTMLAnchorElement['download'];
-      omittedColumns?: Partial<Record<keyof T, boolean>>;
+      omittedColumns?: Array<keyof T>;
     };
+    /**
+     * A function that receives an empty array to populate with error messages.
+     * @param entities the list entities to validate.
+     * @param errors an empty array to populate with error messages.
+     */
+    fileValidator?: (entities: T[]) => void;
     filler: T;
     headers: string[];
+    mapper: (data: string[], index: number) => T;
   }
 
   let {
-    beforeDownloadValidators,
     children,
     currentIndex = $bindable(),
     entities = $bindable(),
-    entityMapper,
     fileData,
+    fileValidator,
     filler,
     headers,
+    mapper,
   }: TableEditorProps<T> = $props();
 
   let settings = $derived(configuration.settings);
-  let isCurrentFileValid = $derived(validateCurrentFile(entities));
-  let fileErrorMessage = $state<string | undefined>(undefined);
-
-  function validateCurrentFile(entities: T[]): CombinedErrorsValidationResult {
-    const failedValidators = isDefined(beforeDownloadValidators)
-      ? beforeDownloadValidators
-          .map((v) => v(entities))
-          .filter((v) => {
-            return !v.valid;
-          })
-      : [];
-
-    return {
-      valid: failedValidators.length === 0,
-      errors: failedValidators.map((v) => v.message),
-    };
-  }
+  let fileErrors = $derived(fileValidator?.(entities) ?? []);
+  let fileUploadError = $state<string | undefined>(undefined);
 
   function handleFile(file: File | null): void {
     if (file) {
       const extension = file.name.split('.').pop();
       if (extension?.toLowerCase() !== 'csv') {
-        fileErrorMessage = 'Invalid file type. Please upload a CSV file.';
+        fileUploadError = 'Invalid file type. Please upload a CSV file.';
         return;
       }
 
-      fileErrorMessage = undefined;
+      fileUploadError = undefined;
 
       const reader = new FileReader();
       reader.onload = async (e) => {
@@ -74,9 +63,9 @@
               .filter((row) => Boolean(row.trim()))
               .map((row, i) => csvSplit(row, i + 1, Object.keys(filler).length));
 
-            entities.splice(0, entities.length, ...csvRows.map(entityMapper));
+            entities.splice(0, entities.length, ...csvRows.map(mapper));
           } catch (error) {
-            fileErrorMessage = `Failed to parse CSV file: ${(error as Error).message}`;
+            fileUploadError = `Failed to parse CSV file: ${(error as Error).message}`;
             return;
           }
         }
@@ -119,7 +108,7 @@
 </script>
 
 <div class="flex flex-col flex-1 overflow-hidden">
-  {#if settings.previewCsv || !isCurrentFileValid.valid}
+  {#if settings.previewCsv || fileErrors?.length > 0}
     <div>
       {#if settings.previewCsv}
         <div class="flex flex-col gap-y-2 px-4 border-b border-neutral-500 pb-2">
@@ -133,11 +122,11 @@
           >
         </div>
       {/if}
-      {#if !isCurrentFileValid.valid}
+      {#if fileErrors?.length > 0}
         <div class="flex flex-col gap-y-2 px-4 border-b border-neutral-500 pb-2">
           <h5 class="text-xl font-medium">The following errors were found within the file</h5>
           <ul>
-            {#each isCurrentFileValid.errors as error}
+            {#each fileErrors as error}
               <li>{error}</li>
             {/each}
           </ul>
@@ -216,9 +205,9 @@
         />
         <Button color="sky" onclick={() => downloadFile()}><FileDown class="inline align-bottom" /> Download</Button>
       </div>
-      {#if isDefined(fileErrorMessage)}
+      {#if isDefined(fileUploadError)}
         <span class="text-red-500">
-          {fileErrorMessage}
+          {fileUploadError}
         </span>
       {/if}
     </div>

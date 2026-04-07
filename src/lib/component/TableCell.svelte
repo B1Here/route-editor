@@ -1,22 +1,24 @@
 <script lang="ts">
-  import type {Supplier, ValidationResult} from '@model/common';
   import type {HTMLAttributes} from 'svelte/elements';
   import {TriangleAlert} from 'lucide-svelte';
 
   interface TableCellProps extends HTMLAttributes<HTMLTableCellElement> {
-    validators?: Array<Supplier<ValidationResult>>;
+    /**
+     * A supplier function that returns an array of error messages.
+     */
+    validator?: () => string[];
   }
 
-  const {children, class: className, validators, ...props}: TableCellProps = $props();
-  const invalidResults = $derived(validators?.filter((v) => !v().valid).map((v) => v()) || []);
+  const {children, class: className, validator, ...props}: TableCellProps = $props();
+  let errors = $derived<string[]>(validator?.() ?? []);
 </script>
 
 <td class={['p-0 border border-neutral-500 m-0 align-middle relative', className]} {...props}>
   {@render children?.()}
-  {#if invalidResults.length > 0}
+  {#if errors.length > 0}
     <span
       class="absolute top-0 right-0 bg-yellow-500 rounded-sm"
-      title={invalidResults.map((result) => result.message).join('\n')}
+      title={errors.join('\n')}
     >
       <TriangleAlert />
     </span>

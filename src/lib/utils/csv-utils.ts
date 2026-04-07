@@ -7,10 +7,10 @@ import {isDefined} from "@utils/utils.svelte";
  * @param omittedColumns an optional record of column keys to omit from the CSV output if the value of a key is true.
  * @returns the CSV string representation.
  */
-export function arrayToCsv<T extends object>(objects: Array<T>, omittedColumns?: Partial<Record<keyof T, boolean>>): string {
+export function arrayToCsv<T extends object>(objects: Array<T>, omittedColumns?: Array<keyof T>): string {
   return objects.map((obj) => Object.keys(obj).map((key) => {
     const value = obj[key as keyof T];
-    if (!isDefined(value) || (omittedColumns?.[key as keyof T])) {
+    if (!isDefined(value) || (omittedColumns?.includes(key as keyof T))) {
       return '';
     }
 

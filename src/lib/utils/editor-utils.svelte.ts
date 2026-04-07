@@ -1,5 +1,3 @@
-import type {ValidationResult} from "@model/common";
-
 /**
  * Converts the given string to a valid CSS class name by replacing all non-alphanumeric characters with hyphens and converting to lowercase.
  * @param str the string to convert.
@@ -24,12 +22,14 @@ export function createTableHeader(name: string): string {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-export function checkForDuplicates<T extends {name: string;}>(entityData: T[], item: T, index: number): ValidationResult {
+export function checkForDuplicates<T extends {name: string;}>(entityData: T[], item: T, index: number): string | null {
   const duplicates = entityData
     .map((data, i) => ({data, index: i}))
     .filter((entity, i) => entity.data.name.trim() !== '' && i !== index && entity.data.name === item.name);
-  return {
-    valid: duplicates.length === 0,
-    message: `The list already contains the name "${item.name}" at row(s): ${duplicates.map((d) => d.index + 1).join(', ')}`,
-  };
+
+  if (duplicates.length === 0) {
+    return null;
+  }
+
+  return `The list already contains the name "${item.name}" at row(s): ${duplicates.map((d) => d.index + 1).join(', ')}`;
 }

@@ -144,13 +144,13 @@
     <h2 class="text-3xl font-medium my-3" id="changelog">Changelog</h2>
     {#each changelog as entry}
       <h3 class="text-2xl font-medium my-2">{entry.version}</h3>
-      {#if entry.additions.length}
+      {#if entry.additions?.length}
         {@render list('Additions', entry.additions)}
       {/if}
-      {#if entry.changes.length}
+      {#if entry.changes?.length}
         {@render list('Changes', entry.changes)}
       {/if}
-      {#if entry.bugfixes.length}
+      {#if entry.bugfixes?.length}
         {@render list('Bugfixes', entry.bugfixes)}
       {/if}
     {/each}

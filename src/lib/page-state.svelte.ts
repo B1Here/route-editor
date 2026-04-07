@@ -1,4 +1,5 @@
-import type {EditorTabView, Point, Route, TextDisplay, Theme, View} from "@model/common";
+import type {Point, Route} from "@model/nsmbw";
+import type {EditorTabView, TextDisplay, Theme, View} from "@model/common";
 
 export const themes = ['system', 'light', 'dark'] as const;
 export const views = ['info', 'editor', 'settings'] as const;

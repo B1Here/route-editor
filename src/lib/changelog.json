@@ -3,9 +3,7 @@
       "version": "1.0.0",
       "additions": [
         "Initial release!"
-      ],
-      "changes": [],
-      "bugfixes": []
+      ]
     },
     {
       "version": "1.0.1",
@@ -16,8 +14,7 @@
         "Styling and color improvements",
         "Minimal HTML cleanup",
         "File size optimisations"
-      ],
-      "bugfixes": []
+      ]
     },
     {
       "version": "1.1.0",
@@ -41,15 +38,25 @@
       ],
       "changes": [
         "Limited the amount of points / routes to 256"
-      ],
-      "bugfixes": []
+      ]
     },
     {
       "version": "1.1.2",
       "additions": [
         "Added the ability to configure the way hardcoded strings are displayed in the UI (e.g. whether to show the internal names or the more user-friendly / descriptive ones)"
+      ]
+    },
+    {
+      "version": "1.1.3",
+      "additions": [
+        "Added more validators to prevent level points from unlocking themselves"
       ],
-      "changes": [],
-      "bugfixes": []
+      "changes": [
+        "Improved performance of validators",
+        "User input in the unlocked levels and bones inputs is now restricted if the point name of that row is not a level"
+      ],
+      "bugfixes": [
+        "Fixed an issue where the validator for levels after a secret exit is cleared would show the hint regarding spaces if the levels after clear column had spaces in it"
+      ]
     }
   ]

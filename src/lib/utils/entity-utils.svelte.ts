@@ -3,7 +3,7 @@ import {isDefined} from "@utils/utils.svelte";
 interface PointVerificationOptions {
   levelPoint: true;
   flagPoint: true;
-  passPoint: true;
+  keyPoint: true;
 }
 
 export function entityHasId<T extends object>(entity: T): entity is T & {id: number;} {
@@ -73,7 +73,7 @@ export function verifyPointName(pointName: string, matchAgainst?: Partial<PointV
     return true;
   }
 
-  if (matchAgainst.passPoint && pointName.match(/^K[a0-9][0-9][0-9a-f]$/) != null) {
+  if (matchAgainst.keyPoint && pointName.match(/^K[a0-9][0-9][0-9a-f]$/) != null) {
     return true;
   }
 

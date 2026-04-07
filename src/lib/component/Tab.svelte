@@ -1,11 +1,10 @@
 <script lang="ts">
   import type {Snippet} from 'svelte';
-  import type {Runnable} from '@model/common';
   import {getColorPropertiesForTheme} from '@utils/utils.svelte';
   import type {ClassValue} from 'svelte/elements';
 
   interface TabButtonProps {
-    action: Runnable;
+    action: () => void;
     active: boolean;
     children?: Snippet;
     toggleable?: boolean;
