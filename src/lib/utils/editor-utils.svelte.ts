@@ -14,7 +14,7 @@ export function createTableHeader(name: string): string {
 
   for (let i = 1; i < name.length; i++) {
     if (name.charAt(i).toUpperCase() === name.charAt(i)) {
-      name = name.slice(0, i) + '\u00a0' + name.slice(i);
+      name = name.slice(0, i) + '\u00a0' + name.slice(i); // non-breaking space to prevent automatic line breaks in the header name (though shorter field names could also do the trick...)
       i++;
     }
   }
