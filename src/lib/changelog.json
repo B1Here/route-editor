@@ -58,5 +58,11 @@
       "bugfixes": [
         "Fixed an issue where the validator for levels after a secret exit is cleared would show the hint regarding spaces if the levels after clear column had spaces in it"
       ]
+    },
+    {
+      "version": "1.1.4",
+      "bugfixes": [
+        "Fixed an issue where only the \"Active Root Cycles\" column would be part of the Route CSV file if the world was determined to not be world 5"
+      ]
     }
   ]

@@ -27,9 +27,9 @@
   );
 
   let omittedColumns = $derived(() => {
-    const columns: Array<keyof Route> = ['name', 'animation', 'activeRootCycles'];
+    const columns: Array<keyof Route> = [];
     if (worldNumber !== 5) {
-      return columns.filter((c) => c !== 'activeRootCycles');
+      columns.push('activeRootCycles');
     }
     return columns;
   });
