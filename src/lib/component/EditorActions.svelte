@@ -1,38 +1,23 @@
 <script lang="ts" generics="T extends object">
-  import {ArrowDownFromLine, ArrowUpFromLine, FileDown, Minus, Plus} from 'lucide-svelte';
-  import Button from './Button.svelte';
-  import {addEntity, moveEntity, removeEntity} from '@lib/utils/entity-utils.svelte';
-  import {getColorPropertiesForTheme, isDefined} from '@lib/utils/utils.svelte';
-  import {arrayToCsv, csvSplit, toSjisBase64String, toUnicode} from '@lib/utils/csv-utils';
+  import {ArrowDownFromLine, ArrowUpFromLine, Copy, FileDown, Minus, Plus} from 'lucide-svelte';
+  import Button from '@component/Button.svelte';
+  import {addEntity, moveEntity, removeEntity} from '@utils/entity-utils.svelte';
+  import {isDefined} from '@utils/utils.svelte';
+  import {arrayToCsv, csvSplit, toSjisBase64String, toUnicode} from '@utils/csv-utils';
 
   interface EditorActionsProps<T extends object> {
     entities: T[];
     filler: T;
-    currentIndex: number;
-    fileData: {
+    currentindex: number;
+    filedata: {
       name: HTMLAnchorElement['download'];
       omittedColumns?: Array<keyof T>;
     };
     mapper: (data: string[], index: number) => T;
   }
 
-  let {entities, filler, currentIndex, fileData, mapper}: EditorActionsProps<T> = $props();
+  let {entities, filler, currentindex, filedata, mapper}: EditorActionsProps<T> = $props();
   let fileUploadError = $state<string | undefined>(undefined);
-
-  const colors = $derived(
-    getColorPropertiesForTheme({
-      light: {
-        file: 'bg-gray-100 hover:bg-gray-200 file:bg-gray-200 hover:file:bg-gray-300',
-        outside: 'bg-zinc-100',
-        header: 'bg-gray-300',
-      },
-      dark: {
-        file: 'bg-zinc-800 hover:bg-zinc-700 file:bg-zinc-700 hover:file:bg-zinc-600',
-        outside: 'bg-zinc-900',
-        header: 'bg-zinc-600',
-      },
-    }),
-  );
 
   function handleFile(file: File | null): void {
     if (file) {
@@ -76,75 +61,170 @@
 
   function downloadFile(): void {
     const link = document.createElement('a');
-    const href = `data:text/plain;base64,${toSjisBase64String(arrayToCsv(entities, fileData.omittedColumns))}`;
+    const href = `data:text/plain;base64,${toSjisBase64String(arrayToCsv(entities, filedata.omittedColumns))}`;
     link.href = href;
-    link.download = fileData.name;
+    link.download = filedata.name;
     link.click();
     window.URL.revokeObjectURL(href);
   }
 </script>
 
-<div class={['p-4 border-t border-neutral-500 flex flex-col gap-y-2', colors.outside]}>
-  <div class="flex gap-x-2">
+<div class="action-bar">
+  <section class="row">
     <Button
-      color="green"
+      color="success"
       onclick={() => {
-        addEntity(entities, filler, currentIndex);
-        currentIndex++;
+        addEntity(entities, filler, currentindex);
+        currentindex++;
       }}
       disabled={entities.length >= 256}
     >
-      <Plus class="inline align-bottom" /> Add Row
+      <Plus class="inline-icon" /><span>Add Row</span>
     </Button>
     <Button
-      color="red"
+      color="primary"
+      onclick={() => {
+        const snapshot = $state.snapshot(entities[currentindex]) as T;
+        addEntity(entities, snapshot, currentindex);
+        currentindex++;
+      }}
+      disabled={entities.length >= 256}
+    >
+      <Copy class="inline-icon" /><span>Duplicate Row</span>
+    </Button>
+    <Button
+      color="danger"
       disabled={entities.length <= 1}
       onclick={() => {
-        removeEntity(entities, currentIndex);
-        if (currentIndex > 0) {
-          currentIndex--;
+        removeEntity(entities, currentindex);
+        if (currentindex > 0) {
+          currentindex--;
         }
       }}
     >
-      <Minus class="inline align-bottom" /> Remove Row
+      <Minus class="inline-icon" /><span>Remove Row</span>
     </Button>
     <Button
-      disabled={entities.length <= 0 || currentIndex <= 0}
+      color="neutral"
+      disabled={entities.length <= 0 || currentindex <= 0}
       onclick={() => {
-        moveEntity(entities, currentIndex, 'up');
-        currentIndex = currentIndex - 1;
+        moveEntity(entities, currentindex, 'up');
+        currentindex = currentindex - 1;
       }}
     >
-      <ArrowUpFromLine class="inline align-bottom" /> Move Up
+      <ArrowUpFromLine class="inline-icon" /><span>Move Up</span>
     </Button>
     <Button
-      disabled={entities.length <= 0 || currentIndex < 0 || currentIndex >= entities.length - 1}
+      color="neutral"
+      disabled={entities.length <= 0 || currentindex < 0 || currentindex >= entities.length - 1}
       onclick={() => {
-        moveEntity(entities, currentIndex, 'down');
-        currentIndex = currentIndex + 1;
+        moveEntity(entities, currentindex, 'down');
+        currentindex = currentindex + 1;
       }}
     >
-      <ArrowDownFromLine class="inline align-bottom" /> Move Down
+      <ArrowDownFromLine class="inline-icon" /><span>Move Down</span>
     </Button>
-  </div>
-  <div class="flex flex-col gap-y-2">
-    <div class="flex gap-x-2">
-      <input
-        accept="text/csv"
-        class={[
-          'file:h-full file:cursor-pointer cursor-pointer border border-neutral-500 rounded-lg file:px-2 file:border-r file:border-neutral-500 file:mr-2 file:py-1',
-          colors.file,
-        ]}
-        id="file_input"
-        type="file"
-        onchange={handleUpload}
-      />
-      <Button color="sky" onclick={() => downloadFile()}><FileDown class="inline align-bottom" /> Download</Button>
+  </section>
+  <section class="column">
+    <div class="file-row">
+      <input accept="text/csv" id="file_input" type="file" onchange={handleUpload} />
+      <Button textalign="center" onclick={() => downloadFile()}
+        ><FileDown class="inline-icon" />Download</Button
+      >
     </div>
     {#if isDefined(fileUploadError)}
-      <span class="text-red-500">
+      <span class="file-upload-error">
         {fileUploadError}
       </span>
     {/if}
-  </div>
+  </section>
 </div>
+
+<style>
+  div.action-bar {
+    padding: 0.8125rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 0.5rem;
+    background-color: var(--color-bg-light);
+    align-items: start;
+    overflow-x: auto;
+  }
+
+  .row,
+  .file-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+
+  input[type='file'],
+  input[type='file']::file-selector-button {
+    transition:
+      color 150ms,
+      fill 150ms,
+      background-color 150ms;
+    font-size: 1rem;
+  }
+
+  input[type='file'] {
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5em;
+    background-color: var(--color-bg-medium);
+  }
+
+  input[type='file']:hover {
+    background-color: var(--color-bg-dark);
+  }
+
+  input[type='file']::file-selector-button {
+    height: 100%;
+    cursor: pointer;
+    border: none;
+    border-right: 1px solid var(--color-border);
+    padding: 0.25rem 0.5rem;
+    margin-right: 0.5rem;
+    background-color: var(--color-bg-light);
+  }
+
+  input[type='file']:hover::file-selector-button {
+    background-color: var(--color-bg-medium);
+  }
+
+  input[type='file']:active::file-selector-button {
+    background-color: var(--color-bg-dark);
+  }
+
+  .file-upload-error {
+    color: var(--color-danger);
+  }
+
+  @media screen and (max-width: 48rem) {
+    div.action-bar {
+      align-items: center;
+    }
+
+    :global(div.action-bar .row button) {
+      font-size: 1.5rem;
+    }
+
+    :global(div.action-bar button > span) {
+      display: none;
+    }
+
+    .file-row {
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      grid-template-rows: repeat(2, 1fr);
+    }
+  }
+</style>

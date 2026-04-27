@@ -2,7 +2,7 @@ import type {Point, Route} from "@model/nsmbw";
 import type {EditorTabView, TextDisplay, Theme, View} from "@model/common";
 
 export const themes = ['system', 'light', 'dark'] as const;
-export const views = ['info', 'editor', 'settings'] as const;
+export const views = ['home', 'editor'] as const;
 export const editorTabViews = ['routes', 'points'] as const;
 export const textDisplays = {
   display: 'Display names',
@@ -46,6 +46,6 @@ export const entityData = $state({
 
 export const configuration = $state({
   settings: loadSettings(),
-  currentView: (localStorage.getItem('currentView') || 'editor') as View,
+  currentView: (localStorage.getItem('currentView') || 'home') as View,
   currentEditorView: (localStorage.getItem('currentEditorView') || 'points') as EditorTabView,
 });

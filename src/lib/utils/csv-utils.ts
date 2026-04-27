@@ -36,12 +36,11 @@ export function arrayToCsv<T extends object>(objects: Array<T>, omittedColumns?:
 
 export function toSjisBase64String(data: string): string {
   const sjisArray = Encoding.convert(data, {from: 'UNICODE', to: 'SJIS', type: 'array'});
-  const base64String = Encoding.base64Encode(sjisArray);
-  return base64String;
+  return Encoding.base64Encode(sjisArray);
 }
 
 export function toUnicode(data: Uint8Array): string {
-  const unicodeArray = Encoding.convert(data, {to: 'UNICODE'});
+  const unicodeArray = Encoding.convert(data, {from: 'SJIS', to: 'UNICODE'});
   return Encoding.codeToString(unicodeArray);
 }
 
@@ -52,6 +51,8 @@ function handleCsvError(message: string, line: number): never {
 /**
  * Splits a CSV string into an array of strings, taking quoted commas into account (arrays in a column).
  * @param str the CSV string to split.
+ * @param line the line number of the CSV string, used for error reporting.
+ * @param expectedLength the expected number of columns in the CSV string.
  * @returns an array of strings representing the split CSV values. Arrays will be preserved as comma-separated strings but without their quotes.
  */
 export function csvSplit<T extends string>(str: string, line: number, expectedLength?: number): T[] {

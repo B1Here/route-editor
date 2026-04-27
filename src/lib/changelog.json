@@ -64,5 +64,10 @@
       "bugfixes": [
         "Fixed an issue where only the \"Active Root Cycles\" column would be part of the Route CSV file if the world was determined to not be world 5"
       ]
+    }, {
+      "version": "1.2.0",
+      "changes": [
+        "Improved styling and user experience"
+      ]
     }
   ]

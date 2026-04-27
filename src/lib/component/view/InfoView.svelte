@@ -1,158 +1,227 @@
 <script lang="ts">
   import {BookOpenText} from 'lucide-svelte';
   import changelog from '@lib/changelog.json';
-  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
-  import CodeBlock from '@component/CodeBlock.svelte';
-
-  const colors = $derived(
-    getColorPropertiesForTheme({
-      light: {
-        strongText: 'text-black',
-        paragraph: 'text-gray-800',
-      },
-      dark: {
-        strongText: 'text-white',
-        paragraph: 'text-gray-300',
-      },
-    }),
-  );
+  import Button from '@component/Button.svelte';
 </script>
 
 {#snippet list(key: string, items: string[])}
-  <h4 class="text-xl">{key}</h4>
-  <ul class={['list-disc list-inside my-3', colors.paragraph]}>
+  <h4>{key}</h4>
+  <ul>
     {#each items as item}
-      <li class={colors.paragraph}>{item}</li>
+      <li>{item}</li>
     {/each}
   </ul>
 {/snippet}
 
 {#snippet navButton(label: string, id: string)}
-  <button
-    class="cursor-pointer hover:opacity-75 py-1"
+  <Button
+    textalign="center"
+    nobg
     onclick={() => document.querySelector(`#${id}`)?.scrollIntoView({behavior: 'smooth'})}
   >
     {label.replace(/ /g, '\u00A0')}
-  </button>
+  </Button>
 {/snippet}
 
-<div class="h-full flex">
-  <div class="border-r border-neutral-500 px-4 flex flex-col">
-    <h2 class="flex gap-x-2 py-2 text-lg font-bold border-b border-neutral-500 mb-2">
-      <BookOpenText class="h-auto" />Contents
-    </h2>
-    {@render navButton('About this page', 'about')}
-    {@render navButton('About Routes', 'routes')}
-    {@render navButton('About Points', 'points')}
-    {@render navButton('Changelog', 'changelog')}
+<aside>
+  <h2 class="invert-text-dark">
+    <BookOpenText class="inline-icon" /> Contents
+  </h2>
+  {@render navButton('About this page', 'about')}
+  {@render navButton('About Routes', 'routes')}
+  {@render navButton('About Points', 'points')}
+  {@render navButton('Changelog', 'changelog')}
+</aside>
+<section class="info-view">
+  <div class="logo-wrapper">
+    <img src="/route-editor/logo.svg" alt="NSMBW Route Editor" />
   </div>
-  <div class="overflow-auto px-4">
-    <img class="w-6/12 mx-auto mt-8 mb-16" src="/route-editor/logo.svg" alt="NSMBW Route Editor" />
-    <h2 class="text-3xl font-medium my-3" id="about">About this page</h2>
-    <p class={['mb-4', colors.paragraph]}>
-      This page was created by <a
-        class="text-blue-500 hover:text-blue-400 active:text-blue-400"
-        href="https://b1here.github.io"
-        target="_blank">B1 Here</a
-      > to help with editing the RouteInfo file of New Super Mario Bros. Wii. It provides all the necessary functions required
-      to make a valid RouteInfo file for both points and routes.
-    </p>
-    <p class={['mb-4', colors.paragraph]}>
-      For more information, check out the <a
-        class="text-blue-500 hover:text-blue-400 active:text-blue-400"
-        href="https://horizon.miraheze.org/wiki/Editing_the_Original_Maps"
-        target="_blank">Editing the Original Maps</a
-      > page on the Horizon wiki.
-    </p>
-    <h3 class="text-2xl font-medium">Credits</h3>
-    <ul class={['list-disc list-inside my-3', colors.paragraph]}>
-      <li>
-        The <a
-          class="text-blue-500 hover:text-blue-400 active:text-blue-400"
-          href="https://discord.gg/Quvaj2Ufhb"
-          target="_blank"
-        >
-          Horizon Discord Server
-        </a>
-      </li>
-    </ul>
+  <h2 class="invert-text-dark" id="about">About this page</h2>
+  <p>
+    This page was created by <a href="https://b1here.github.io" target="_blank">B1 Here</a> to help with editing the RouteInfo
+    file of New Super Mario Bros. Wii. It provides all the necessary functions required to make a valid RouteInfo file for
+    both points and routes.
+  </p>
+  <p>
+    For more information, check out the <a
+      href="https://horizon.miraheze.org/wiki/Editing_the_Original_Maps"
+      target="_blank">Editing the Original Maps</a
+    > page on the Horizon wiki.
+  </p>
+  <h3>Credits</h3>
+  <ul>
+    <li>
+      The <a href="https://discord.gg/Quvaj2Ufhb" target="_blank"> Horizon Discord Server </a>
+    </li>
+  </ul>
 
-    <hr class="border-neutral-500" />
+  <hr />
 
-    <h2 class="text-3xl font-medium my-3" id="routes">About Routes</h2>
-    <p class={['mb-4', colors.paragraph]}>A route is an invisible straight line connecting two points.</p>
-    <p class={['mb-4', colors.paragraph]}>The player can traverse a route in many different ways. This includes:</p>
-    <ul class={['list-disc list-inside my-3', colors.paragraph]}>
-      <li>Walking</li>
-      <li>Jumping</li>
-      <li>Climbing</li>
-      <li>and many other ways...</li>
-    </ul>
-    <p class={['mb-4', colors.paragraph]}>
-      For a full list, visit the <a
-        class="text-blue-500 hover:text-blue-400 active:text-blue-400"
-        href="https://horizon.miraheze.org/wiki/World_Map_Data#Route_Animations"
-        target="_blank">World Map Data &rarr; Editing Route Animations</a
-      > page on the Horizon wiki.
-    </p>
+  <h2 class="invert-text-dark" id="routes">About Routes</h2>
+  <p>A route is an invisible straight line connecting two points.</p>
+  <p>The player can traverse a route in many different ways. This includes:</p>
+  <ul>
+    <li>Walking</li>
+    <li>Jumping</li>
+    <li>Climbing</li>
+    <li>and many other ways...</li>
+  </ul>
+  <p>
+    For a full list, visit the <a
+      href="https://horizon.miraheze.org/wiki/World_Map_Data#Route_Animations"
+      target="_blank">World Map Data &rarr; Editing Route Animations</a
+    > page on the Horizon wiki.
+  </p>
 
-    <hr class="border-neutral-500" />
+  <hr />
 
-    <h2 class="text-3xl font-medium my-3" id="points">About Points</h2>
-    <p class={['mb-4', colors.paragraph]}>
-      A point defines a spot on the world map, the player can stand on or move across. Two points make up a route. A
-      point <b class={colors.strongText}>must</b>
-      follow the following convention or it might not work properly:
-      <CodeBlock>Xyyy</CodeBlock>.
-    </p>
-    <p class={['mb-4', colors.paragraph]}>There are three different types of points:</p>
-    <ul class={['list-disc list-inside my-3', colors.paragraph]}>
-      <li>
-        <b class={colors.strongText}>Fxxx</b>: Points that can have flags set which can limit the players' and camera's
-        actions. <CodeBlock>xxx</CodeBlock> can be any 3-digit number.
-      </li>
-      <li>
-        <b class={colors.strongText}>Kxxx</b>: Points the players can pass through. They cannot have flags set. <CodeBlock
-          >xxx</CodeBlock
-        > can be any 3-digit number.
-      </li>
-      <li>
-        <b class={colors.strongText}>Wxyz</b>: Points that act as levels the players must play through in order to
-        progress. The player will always stop on these points. <CodeBlock>x</CodeBlock> is the world number, <CodeBlock
-          >y</CodeBlock
-        > can be used to indicate a special level like a tower, castle or ghost house and <CodeBlock>z</CodeBlock> is a generic
-        level number ranging from 0 to 9. Common examples are:
-        <ul class={['list-disc list-inside my-3 ml-6', colors.paragraph]}>
-          <li><CodeBlock>W101</CodeBlock></li>
-          <li><CodeBlock>W2T0</CodeBlock></li>
-          <li><CodeBlock>W3G0</CodeBlock></li>
-        </ul>
-      </li>
-    </ul>
-    <p class={['mb-4', colors.paragraph]}>
-      For more information, visit the <a
-        class="text-blue-500 hover:text-blue-400 active:text-blue-400"
-        href="https://horizon.miraheze.org/wiki/World_Map_Data#Point_Names"
-        target="_blank"
-      >
-        World Map Data &rarr; Point Names
-      </a> page on the Horizon wiki.
-    </p>
+  <h2 class="invert-text-dark" id="points">About Points</h2>
+  <p>
+    A point defines a spot on the world map, the player can stand on or move across. Two points make up a route. A point <b
+      >must</b
+    >
+    follow the following convention or it might not work properly:
+    <code>Xyyy</code>.
+  </p>
+  <p>There are three different types of points:</p>
+  <ul>
+    <li>
+      <b>Fxxx</b>: Points that can have flags set which can limit the players' and camera's actions. <code>xxx</code> can
+      be any 3-digit number.
+    </li>
+    <li>
+      <b>Kxxx</b>: Points the players can pass through. They cannot have flags set.
+      <code>xxx</code> can be any 3-digit number.
+    </li>
+    <li>
+      <b>Wxyz</b>: Points that act as levels the players must play through in order to progress. The player will always
+      stop on these points. <code>x</code> is the world number, <code>y</code> can be used to indicate a special level
+      like a tower, castle or ghost house and <code>z</code> is a generic level number ranging from 0 to 9. Common
+      examples are:
+      <ul>
+        <li><code>W101</code></li>
+        <li><code>W2T0</code></li>
+        <li><code>W3G0</code></li>
+      </ul>
+    </li>
+  </ul>
+  <p>
+    For more information, visit the <a
+      href="https://horizon.miraheze.org/wiki/World_Map_Data#Point_Names"
+      target="_blank"
+    >
+      World Map Data &rarr; Point Names
+    </a> page on the Horizon wiki.
+  </p>
 
-    <hr class="border-neutral-500" />
+  <hr />
 
-    <h2 class="text-3xl font-medium my-3" id="changelog">Changelog</h2>
-    {#each changelog as entry}
-      <h3 class="text-2xl font-medium my-2">{entry.version}</h3>
-      {#if entry.additions?.length}
-        {@render list('Additions', entry.additions)}
-      {/if}
-      {#if entry.changes?.length}
-        {@render list('Changes', entry.changes)}
-      {/if}
-      {#if entry.bugfixes?.length}
-        {@render list('Bugfixes', entry.bugfixes)}
-      {/if}
-    {/each}
-  </div>
-</div>
+  <h2 class="invert-text-dark" id="changelog">Changelog</h2>
+  {#each changelog as entry}
+    <h3>{entry.version}</h3>
+    {#if entry.additions?.length}
+      {@render list('Additions', entry.additions)}
+    {/if}
+    {#if entry.changes?.length}
+      {@render list('Changes', entry.changes)}
+    {/if}
+    {#if entry.bugfixes?.length}
+      {@render list('Bugfixes', entry.bugfixes)}
+    {/if}
+  {/each}
+  <hr />
+  <footer class="invert-text-dark">&copy; 2025 - {new Date().getFullYear()} B1Here</footer>
+</section>
+
+<style>
+  :global(main:has(.info-view)) {
+    display: flex;
+    height: 100%;
+    position: relative;
+  }
+
+  h2 {
+    color: var(--color-text-dark);
+  }
+
+  aside {
+    border-right: 1px solid var(--color-border);
+    padding-inline: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  section {
+    box-sizing: border-box;
+    padding-inline: 1rem;
+    overflow-y: auto;
+  }
+
+  hr {
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  code {
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    padding: 0.25rem;
+  }
+
+  li > code {
+    line-height: 1.75rem;
+  }
+
+  a {
+    color: var(--color-primary);
+  }
+
+  a:hover,
+  a:focus-visible {
+    color: color-mix(in srgb, var(--color-primary), white 16%);
+  }
+
+  a:active {
+    color: color-mix(in srgb, var(--color-primary), white 33%);
+  }
+
+  aside > h2 {
+    display: flex;
+    column-gap: 0.5rem;
+    padding-block: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  img {
+    width: 50%;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  footer {
+    padding: 0.5rem 0 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--color-text-dark);
+  }
+
+  @media screen and (max-width: 48rem) {
+    aside {
+      display: none;
+    }
+  }
+</style>

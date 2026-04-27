@@ -7,24 +7,13 @@
   import {checkForDuplicates} from '@utils/editor-utils.svelte';
   import {verifyPointName} from '@utils/entity-utils.svelte';
   import {csvSplit} from '@utils/csv-utils';
-  import {getColorPropertiesForTheme, getDisplayText, isDefined} from '@utils/utils.svelte';
+  import {getDisplayText, isDefined} from '@utils/utils.svelte';
 
   let routes = $derived(entityData.routes);
   let worldNumber = $derived(
     parseInt(routes.find((r) => r.name.length === 9 && r.name.startsWith('RW'))?.name[2] || '0'),
   );
   let currentIndex = $state(0);
-
-  const colors = $derived(
-    getColorPropertiesForTheme({
-      light: {
-        option: '',
-      },
-      dark: {
-        option: 'bg-black text-white',
-      },
-    }),
-  );
 
   let omittedColumns = $derived(() => {
     const columns: Array<keyof Route> = [];
@@ -37,8 +26,8 @@
 
 <TableEditor
   bind:entities={routes}
-  bind:currentIndex
-  fileValidator={(entities) => {
+  bind:currentindex={currentIndex}
+  filevalidator={(entities) => {
     const errors: string[] = [];
     const levelRoutes = entities.filter((r) => r.name.includes('W'));
     const invalidRoutes = levelRoutes.filter(
@@ -59,7 +48,7 @@
     return errors;
   }}
   filler={routeFiller}
-  fileData={{name: `routeW${worldNumber}.csv`, omittedColumns: omittedColumns()}}
+  filedata={{name: `routeW${worldNumber}.csv`, omittedColumns: omittedColumns()}}
   headers={[...Object.keys(routeFiller)]}
   mapper={(data, index) => ({
     name: data[0],
@@ -93,12 +82,12 @@
           return errors;
         }}
       >
-        <input class="form-control border-0 sharp-corners bg-transparent" type="text" bind:value={route.name} />
+        <input type="text" bind:value={route.name} />
       </TableCell>
       <TableCell>
-        <select class="form-select border-0 sharp-corners bg-transparent w-full" bind:value={route.animation}>
+        <select bind:value={route.animation}>
           {#each routeAnimations as animation}
-            <option class={colors.option} value={animation.jpName}>
+            <option value={animation.jpName}>
               {getDisplayText(animation.jpName, animation.translatedName)}
             </option>
           {/each}
@@ -115,22 +104,25 @@
         }}
       >
         {#if worldNumber === 5}
-          <select
-            class="form-select border-0 sharp-corners bg-transparent w-full"
-            multiple
-            size="1"
-            bind:value={route.activeRootCycles}
-          >
+          <select multiple size="1" bind:value={route.activeRootCycles}>
             {#each rootCycles as cycle}
-              <option class={colors.option} value={cycle}>
+              <option value={cycle}>
                 Cycle {cycle}
               </option>
             {/each}
           </select>
         {:else}
-          <div class="text-muted text-center" title="Only available in World 5">unavailable</div>
+          <div class="unavailable" title="Only available in World 5">unavailable</div>
         {/if}
       </TableCell>
     </TableRow>
   {/each}
 </TableEditor>
+
+<style>
+  .unavailable {
+    color: var(--color-text-dark);
+    opacity: 0.5;
+    text-align: center;
+  }
+</style>

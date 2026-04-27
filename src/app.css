@@ -1,1 +1,64 @@
-@import "tailwindcss";
+:root {
+    --color-border: hsl(240, 5%, 75%);
+    --color-text-dark: black;
+    --color-text-medium: hsl(0, 0%, 5%);
+    --color-text-light: hsl(0, 0%, 25%);
+    --color-bg-light: hsl(210, 5%, 95%);
+    --color-bg-medium: hsl(210, 10%, 90%);
+    --color-bg-dark: hsl(210, 15%, 85%);
+    --color-primary: hsl(210, 100%, 50%);
+    --color-success: hsl(130, 66%, 50%);
+    --color-warning: hsl(45, 95%, 50%);
+    --color-danger: hsl(350, 80%, 50%);
+    --color-neutral: hsl(0, 0%, 50%);
+}
+
+:root:has(body > .dark) {
+    --color-border: hsl(0, 0%, 25%);
+    --color-bg-light: hsl(240, 5%, 15%);
+    --color-bg-medium: hsl(240, 5%, 10%);
+    --color-bg-dark: hsl(240, 10%, 5%);
+    --color-text-light: white;
+    --color-text-medium: hsl(240, 5%, 90%);
+    --color-text-dark: hsl(240, 5%, 75%);
+    --color-primary: hsl(210, 100%, 50%);
+    --color-success: hsl(130, 66%, 40%);
+    --color-warning: hsl(45, 90%, 45%);
+    color-scheme: dark;
+}
+
+body {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    padding: 0;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body > .dark .invert-text-dark {
+    --color-text-light: hsl(240, 5%, 85%);
+    --color-text-dark: white;
+}
+
+body > .dark .invert-bg-dark {
+    --color-bg-light: hsl(240, 10%, 5%);
+    --color-bg-dark: hsl(240, 5%, 15%);
+}
+
+.inline-icon {
+    height: 1em;
+    width: 1em;
+    display: inline;
+}
+
+.align-center {
+    justify-content: center;
+    text-align: center;
+}
+
+.align-right {
+    justify-content: flex-end;
+    text-align: right;
+}

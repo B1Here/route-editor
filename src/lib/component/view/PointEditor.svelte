@@ -6,32 +6,17 @@
   import {csvSplit} from '@utils/csv-utils';
   import {checkForDuplicates} from '@utils/editor-utils.svelte';
   import {verifyBoneName, verifyPointName} from '@utils/entity-utils.svelte';
-  import {getColorPropertiesForTheme, getDisplayText, isDefined} from '@utils/utils.svelte';
+  import {getDisplayText, isDefined} from '@utils/utils.svelte';
   import {type Point, type FlagKeys, numberedFlags, allFlags} from '@model/nsmbw';
 
   let points = $derived(entityData.points);
   let worldNumber = $derived(parseInt(points.find((p) => p.name.startsWith('W'))?.name[1] || '0'));
 
   let currentIndex = $state(0);
-
-  const colors = $derived(
-    getColorPropertiesForTheme({
-      light: {
-        option: '',
-        unused: 'text-black/50',
-        disabledInput: 'disabled:bg-zinc-300',
-      },
-      dark: {
-        option: 'bg-black text-white',
-        unused: 'text-white/50',
-        disabledInput: 'disabled:bg-zinc-900',
-      },
-    }),
-  );
 </script>
 
 <TableEditor
-  fileValidator={(entities: Point[]) => {
+  filevalidator={(entities: Point[]) => {
     const errors: string[] = [];
 
     const demoPoints = entities
@@ -53,9 +38,9 @@
     }
     return errors;
   }}
-  bind:currentIndex
+  bind:currentindex={currentIndex}
   bind:entities={points}
-  fileData={{name: `pointW${worldNumber}.csv`}}
+  filedata={{name: `pointW${worldNumber}.csv`}}
   filler={pointFiller}
   headers={Object.keys(pointFiller)}
   mapper={(data, index) => {
@@ -75,7 +60,7 @@
   {#each points as point, index}
     {@const isNotLevelPoint = verifyPointName(point.name, {flagPoint: true, keyPoint: true})}
     <TableRow {index} onselect={() => (currentIndex = index)} selected={index === currentIndex}>
-      <TableCell class="text-center">{point.id}</TableCell>
+      <TableCell textalign="center">{point.id}</TableCell>
       <TableCell
         validator={() => {
           const errors: string[] = [];
@@ -90,7 +75,7 @@
           return errors;
         }}
       >
-        <input class="outline-none px-1" type="text" bind:value={point.name} />
+        <input type="text" bind:value={point.name} />
       </TableCell>
       <TableCell
         validator={() => {
@@ -120,7 +105,7 @@
       >
         <select multiple size="1" bind:value={point.flags}>
           {#each Object.keys(allFlags) as flag}
-            <option class={colors.option} value={flag}>
+            <option value={flag}>
               {getDisplayText(flag, allFlags[flag as FlagKeys])}
             </option>
           {/each}
@@ -131,9 +116,7 @@
           const errors: string[] = [];
           if (
             point.levelsAfterClear.length > 0 &&
-            point.levelsAfterClear
-              .split(',')
-              .some((level) => !verifyPointName(level, {levelPoint: true}))
+            point.levelsAfterClear.split(',').some((level) => !verifyPointName(level, {levelPoint: true}))
           ) {
             errors.push('A level name does not follow the correct format (e.g. W101).');
           }
@@ -147,11 +130,7 @@
           return errors;
         }}
       >
-        <input
-          class={['outline-none px-1', colors.disabledInput]}
-          disabled={isNotLevelPoint}
-          bind:value={point.levelsAfterClear}
-        />
+        <input disabled={isNotLevelPoint} bind:value={point.levelsAfterClear} />
       </TableCell>
       <TableCell
         validator={() => {
@@ -176,21 +155,15 @@
           return errors;
         }}
       >
-        <input
-          class={['outline-none px-1', colors.disabledInput]}
-          disabled={isNotLevelPoint}
-          bind:value={point.bonesAfterClear}
-        />
+        <input disabled={isNotLevelPoint} bind:value={point.bonesAfterClear} />
       </TableCell>
-      <TableCell class={['px-2 text-center', colors.unused]}>Unused (does nothing)</TableCell>
+      <TableCell class="unused invert-text-dark" textalign="center">Unused (does nothing)</TableCell>
       <TableCell
         validator={() => {
           const errors: string[] = [];
           if (
             point.levelsAfterSecretExit.length > 0 &&
-            point.levelsAfterSecretExit
-              .split(',')
-              .some((level) => !verifyPointName(level, {levelPoint: true}))
+            point.levelsAfterSecretExit.split(',').some((level) => !verifyPointName(level, {levelPoint: true}))
           ) {
             errors.push('A level name does not follow the correct format (e.g. W101).');
           }
@@ -204,11 +177,7 @@
           return errors;
         }}
       >
-        <input
-          class={['outline-none px-1', colors.disabledInput]}
-          disabled={isNotLevelPoint}
-          bind:value={point.levelsAfterSecretExit}
-        />
+        <input disabled={isNotLevelPoint} bind:value={point.levelsAfterSecretExit} />
       </TableCell>
       <TableCell
         validator={() => {
@@ -236,13 +205,20 @@
           return errors;
         }}
       >
-        <input
-          class={['outline-none px-1', colors.disabledInput]}
-          disabled={isNotLevelPoint}
-          bind:value={point.bonesAfterSecretExit}
-        />
+        <input disabled={isNotLevelPoint} bind:value={point.bonesAfterSecretExit} />
       </TableCell>
-      <TableCell class={['px-2 text-center', colors.unused]}>Unused (does nothing)</TableCell>
+      <TableCell class="unused invert-text-dark" textalign="center">Unused (does nothing)</TableCell>
     </TableRow>
   {/each}
 </TableEditor>
+
+<style>
+  input:disabled {
+    background-color: var(--color-bg-dark);
+  }
+
+  :global .table-editor table tbody td.unused {
+    color: var(--color-text-dark);
+    opacity: 0.5;
+  }
+</style>

@@ -1,7 +1,5 @@
 <script lang="ts">
   import type {Snippet} from 'svelte';
-  import {getColorPropertiesForTheme} from '@utils/utils.svelte';
-  import type {ClassValue} from 'svelte/elements';
 
   interface TabButtonProps {
     action: () => void;
@@ -12,55 +10,67 @@
 
   interface TabGapProps {
     empty: true;
-    size?: 'small' | 'max';
   }
 
   type TabProps = TabButtonProps | TabGapProps;
-
-  const colors = $derived(
-    getColorPropertiesForTheme({
-      light: {
-        base: 'cursor-pointer bg-zinc-300 hover:bg-zinc-200 focus:bg-zinc-200 active:bg-zinc-100',
-        selected: 'bg-white border-b-white',
-        toggleableTab:
-          'hover:bg-zinc-100 focus:bg-zinc-100 hover:border-b-zinc-500 focus:border-b-zinc-500 active:bg-zinc-200',
-      },
-      dark: {
-        base: 'cursor-pointer bg-zinc-900 hover:bg-zinc-700 focus:bg-zinc-700 active:bg-zinc-600',
-        selected: 'bg-zinc-800 border-b-zinc-800',
-        toggleableTab:
-          'hover:bg-zinc-900 focus:bg-zinc-900 hover:border-b-zinc-500 focus:border-b-zinc-500 active:bg-black',
-      },
-    }),
-  );
-
-  function evaluateSize(size: TabGapProps['size']): ClassValue {
-    switch (size) {
-      case 'max':
-        return 'flex-1';
-      case 'small':
-      default:
-        return 'w-4';
-    }
-  }
 
   const props: TabProps = $props();
 </script>
 
 {#if 'empty' in props}
-  {@const {size} = props}
-  <div class={['border-b border-neutral-500', evaluateSize(size)]}></div>
+  <div class="gap"></div>
 {:else if 'action' in props}
   {@const {action, active, children, toggleable} = props}
   <button
-    class={[
-      'text-lg px-2 pb-1 outline-0 border rounded-t-lg border-neutral-500',
-      active ? colors.selected : colors.base,
-      toggleable && active && [colors.toggleableTab, 'cursor-pointer'],
-    ]}
+    class={['invert-text-dark', active && 'active', toggleable && 'toggleable']}
     disabled={!toggleable && active}
     onclick={action}
   >
     {@render children?.()}
   </button>
 {/if}
+
+<style>
+  button {
+    font-size: 1.125rem;
+    padding: 0.125rem 0.5rem;
+    outline: 0;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-bottom-color: var(--color-border);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+
+  button:not(.active):hover,
+  button:not(.active):focus {
+    background-color: var(--color-bg-medium);
+    color: var(--color-text-medium);
+    cursor: pointer;
+  }
+
+  button:not(.active):focus {
+    background-color: var(--color-bg-light);
+    border-color: var(--color-border);
+  }
+
+  button:not(.active):active {
+    background-color: var(--color-bg-light);
+  }
+
+  button.active {
+    background-color: var(--color-bg-medium);
+    border-color: var(--color-border);
+    border-bottom-color: var(--color-bg-medium);
+    color: var(--color-text-dark);
+    z-index: 1;
+  }
+
+  button > :global(svg) {
+    vertical-align: middle;
+  }
+
+  div.gap {
+    width: 1rem;
+  }
+</style>
