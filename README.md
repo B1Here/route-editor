@@ -2,6 +2,12 @@
 
 A tool to help with New Super Mario Bros. Wii RouteInfo file editing.
 
+## Notice
+
+This project has been archived in favour of a similar project that integrates the RouteInfo editing process into Blender directly.
+
+You can find said project [here](https://github.com/B1Here/nsmbw-routeinfo-editor/releases).
+
 ## Introduction
 
 This web app was made to help with the process of editing the RouteInfo file of New Super Mario Bros.
